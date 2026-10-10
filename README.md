@@ -76,7 +76,10 @@ node lib/launcher.mjs --plan       # which runtime the launcher picked
 non-empty `description`, no legacy camelCase keys that make the skill provider
 skip a file), reference resolution, the launcher plan, and then starts REA
 through the launcher and completes an MCP initialize/tools-list exchange,
-requiring the full catalog and `analyze_javascript_application`.
+requiring the full catalog and `analyze_javascript_application`. It also
+re-asserts the Windows regression guards — `windowsHide` on every child spawn
+and the Electron runtime disqualified for native-addon children — so a later
+edit cannot silently reintroduce the 0.1.0 defects.
 
 In a sandbox that denies child pipes, the interactive handshake reports `SKIP`
 instead of `FAIL`; run it in a normal shell for the real result.

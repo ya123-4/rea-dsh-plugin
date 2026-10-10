@@ -66,7 +66,9 @@ node lib/launcher.mjs --plan       # 查看 launcher 最终选中了哪个运行
 非空 `description`、不含会让 provider 静默跳过该 skill 的旧驼峰键）、引用文
 件是否齐全、launcher 解析计划，最后**通过 launcher 真正启动 REA** 并完成
 MCP `initialize` / `tools/list` 交互，要求返回完整工具目录且包含
-`analyze_javascript_application`。
+`analyze_javascript_application`。它同时重申 Windows 回归防线——每处子进程
+spawn 必须带 `windowsHide`、加载原生 addon 的子进程必须排除 Electron 运行时
+——避免后续改动无声地重新引入 0.1.0 的缺陷。
 
 在禁止创建管道的沙箱里，交互式握手会报 `SKIP` 而不是 `FAIL`；要拿真实结
 果请在普通 shell 中运行。

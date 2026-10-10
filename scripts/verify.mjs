@@ -182,6 +182,27 @@ check("optional dependency declaration", () => {
   return `${pinned} (${installed ? "installed" : "not installed; launcher will fall back"})`;
 });
 
+/**
+ * Regression guards for the two Windows defects that shipped in 0.1.0: a child
+ * spawned without windowsHide gets its own console (visible window, stdio
+ * detached from the MCP pipes, reconnect loop), and REA run on the harness
+ * Electron runtime aborts on native-addon ABI mismatch (exit 0xFFFF0003).
+ */
+check("launcher guards Windows child spawning", () => {
+  const text = readFileSync(join(packageRoot, "lib", "launcher.mjs"), "utf8");
+  const hides = (text.match(/windowsHide:\s*true/gu) ?? []).length;
+  assert(
+    hides >= 2,
+    `every child spawn needs windowsHide (found ${hides}); without it a console window pops up and stdio leaves the MCP pipes`,
+  );
+  assert(
+    /process\.versions\.electron/u.test(text),
+    "the Electron runtime must be disqualified for children that load native addons",
+  );
+  assert(/REA_DSH_TRACE/u.test(text), "the file trace is the only headless view of a failed handshake");
+  return `${hides} windowsHide guards, Electron disqualified, file trace kept`;
+});
+
 const planOf = async () => {
   const run = await runCaptured(process.execPath, [join(packageRoot, "lib", "launcher.mjs"), "--plan"], {
     timeoutMs: 60_000,
