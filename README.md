@@ -90,6 +90,7 @@ instead of `FAIL`; run it in a normal shell for the real result.
 | `resource_constraint` on a large result | Not a failure. Use `mcp__rea__inspect_analysis_view`, request a page, or export an evidence bundle instead of repeating the analysis. |
 | `npx` fallback is slow on first use | The optional dependency did not install; reinstall the plugin so `rea-agents` resolves locally. |
 | Launcher trace ends in `exit 0xFFFF0003` | REA was started on the harness Electron runtime, whose native-module ABI aborts REA's addons. Set `REA_AGENTS_NODE` to a real Node, or install Node on `PATH`; the launcher already prefers a real Node when it finds one. |
+| Console windows keep popping up | Fixed in 0.1.1: children are now spawned with `windowsHide`, so `node.exe` no longer gets its own console. On 0.1.0 the same defect also fed a reconnect loop — upgrade rather than tuning timeouts. |
 
 ## Layout
 

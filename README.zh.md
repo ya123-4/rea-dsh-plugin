@@ -80,6 +80,7 @@ MCP `initialize` / `tools/list` 交互，要求返回完整工具目录且包含
 | 大结果返回 `resource_constraint` | 不是失败。改用 `mcp__rea__inspect_analysis_view`、请求分页，或导出 evidence bundle，不要重复分析。 |
 | 首次走 `npx` 回退很慢 | 说明 optionalDependency 没装上；重装插件让 `rea-agents` 落到本地。 |
 | launcher 日志以 `exit 0xFFFF0003` 结束 | REA 被跑在 Harness 的 Electron 运行时上，其原生模块 ABI 会让 REA 的 addon 直接中止。把 `REA_AGENTS_NODE` 指向真正的 Node，或在 `PATH` 上装 Node；launcher 找到真 Node 时会优先用它。 |
+| 不断弹出控制台窗口 | 0.1.1 已修：子进程现在带 `windowsHide` 启动，`node.exe` 不再获得自己的控制台。0.1.0 上同一缺陷还会引发重连循环——直接升级，不要靠调超时绕过。 |
 
 ## 目录结构
 

@@ -1,6 +1,6 @@
 {
   "name": "rea-dsh-plugin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "DeepSeek Harness plugin for REA (rea-agents): registers the REA MCP server as mcp__rea__* tools and bundles the reverse-engineer-anything agent skill in one install.",
   "license": "MIT",
   "type": "module",
