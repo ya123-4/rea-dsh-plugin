@@ -1,0 +1,49 @@
+{
+  "name": "rea-dsh-plugin",
+  "version": "0.1.0",
+  "description": "DeepSeek Harness plugin for REA (rea-agents): registers the REA MCP server as mcp__rea__* tools and bundles the reverse-engineer-anything agent skill in one install.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json",
+    "./launcher": "./lib/launcher.mjs"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "skills",
+    "scripts",
+    "!**/__pycache__/**",
+    "!**/*.pyc",
+    "README.md",
+    "README.zh.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": "^22.19.0 || ^24.11.0 || >=26.0.0"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "rea",
+    "rea-agents",
+    "mcp",
+    "reverse-engineering",
+    "agent-skill",
+    "cordis"
+  ],
+  "scripts": {
+    "pack": "npm pack",
+    "verify": "node scripts/verify.mjs"
+  },
+  "optionalDependencies": {
+    "rea-agents": "6.3.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

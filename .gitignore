@@ -1,0 +1,19 @@
+# npm / node
+node_modules/
+*.tgz
+dist/
+.npm-cache/
+
+# python
+__pycache__/
+*.pyc
+
+# local git publishing state (never commit the token)
+*config.json
+.env
+
+# transient CA bundles for secure git pushes
+.github-publisher-ca-*.pem
+
+# superpowers sdd workspace
+.superpowers/

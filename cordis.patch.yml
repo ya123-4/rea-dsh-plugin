@@ -1,0 +1,38 @@
+# rea-dsh-plugin bundle for DeepSeek Harness.
+#
+# One install wires two things that REA normally asks the operator to do by
+# hand (see `rea setup`): expose the REA agent skill to the model, and register
+# the REA MCP server so its tools appear as `mcp__rea__<tool>`.
+#
+# Both entries resolve their files from this package's installed identity
+# anchored at the profile Loader baseUrl — never by concatenating baseUrl.
+# `args` is a block sequence on purpose: a `!!js` expression carries commas
+# inside its calls, and a YAML flow sequence would read them as separators.
+#
+# The MCP server runs through the plugin launcher, which locates the REA CLI
+# and forwards stdio. `process.execPath` is the harness executable itself, so
+# ELECTRON_RUN_AS_NODE makes it behave as its bundled Node runtime even on a
+# machine with no global Node.js install; a plain Node binary ignores the flag.
+# REA_DSH_TRACE keeps the launcher's side of a failed handshake observable: the
+# harness reads neither the child's stdout (MCP frames) nor its stderr.
+- insert:
+    - id: rea-dsh-skill-filesystem
+      name: '@deepseek-ai/dsh-skill-filesystem'
+      config:
+        providerName: rea-dsh-plugin
+        includeDefaultRoots: false
+        bundledSkillDir: !!js process.getBuiltinModule('node:path').join(process.getBuiltinModule('node:path').dirname(process.getBuiltinModule('node:module').createRequire(baseUrl).resolve('rea-dsh-plugin/package.json')), 'skills')
+    - id: rea-dsh-mcp-client
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: rea
+        transport: stdio
+        command: !!js process.execPath
+        args:
+          - !!js process.getBuiltinModule('node:path').join(process.getBuiltinModule('node:path').dirname(process.getBuiltinModule('node:module').createRequire(baseUrl).resolve('rea-dsh-plugin/package.json')), 'lib', 'launcher.mjs')
+          - mcp
+        cwd: !!js process.cwd()
+        failOnStartupError: false
+        env:
+          ELECTRON_RUN_AS_NODE: '1'
+          REA_DSH_TRACE: !!js process.getBuiltinModule('node:path').join(process.getBuiltinModule('node:path').dirname(process.getBuiltinModule('node:module').createRequire(baseUrl).resolve('rea-dsh-plugin/package.json')), 'launcher.log')
