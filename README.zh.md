@@ -12,7 +12,7 @@ REA 本身是「CLI + MCP 服务器 + skill」。上游要求使用者手工接�
 
 | 组成 | 结果 |
 | --- | --- |
-| `@deepseek-ai/dsh-mcp-client` 条目 | REA 的 139 个 MCP 工具，形如 `mcp__rea__open_binary`、`mcp__rea__analyze_javascript_application` |
+| `@deepseek-ai/dsh-mcp-client` 条目 | REA 的 170 个 MCP 工具，形如 `mcp__rea__open_binary`、`mcp__rea__analyze_javascript_application` |
 | `@deepseek-ai/dsh-skill-filesystem` 条目 | `reverse-engineer-anything`（上游方法论）与 `rea-dsh`（Harness 侧用法）两个 skill |
 | `lib/launcher.mjs` | 定位 REA CLI、挑选满足版本要求的 Node、转发 stdio |
 
@@ -78,7 +78,7 @@ spawn 必须带 `windowsHide`、加载原生 addon 的子进程必须排除 Elec
 | 现象 | 原因与处理 |
 | --- | --- |
 | 没有 `mcp__rea__*` 工具 | 没找到 REA，或装完没有重载 Harness。先跑 `node lib/launcher.mjs --plan`；再装 `rea-agents` 或设 `REA_AGENTS_ENTRY`；然后重载。 |
-| 工具有，但某个 provider 不可用 | 属正常：静态 JavaScript/ASAR 分析不需要反汇编引擎。用 `npx -y rea-agents@6.3.0 doctor --json` 查看。 |
+| 工具有，但某个 provider 不可用 | 属正常：静态 JavaScript/ASAR 分析不需要反汇编引擎。用 `npx -y rea-agents@6.4.0 doctor --json` 查看。 |
 | 大结果返回 `resource_constraint` | 不是失败。改用 `mcp__rea__inspect_analysis_view`、请求分页，或导出 evidence bundle，不要重复分析。 |
 | 首次走 `npx` 回退很慢 | 说明 optionalDependency 没装上；重装插件让 `rea-agents` 落到本地。 |
 | launcher 日志以 `exit 0xFFFF0003` 结束 | REA 被跑在 Harness 的 Electron 运行时上，其原生模块 ABI 会让 REA 的 addon 直接中止。把 `REA_AGENTS_NODE` 指向真正的 Node，或在 `PATH` 上装 Node；launcher 找到真 Node 时会优先用它。 |

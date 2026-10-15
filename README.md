@@ -15,7 +15,7 @@ locates the REA runtime itself.
 
 | Piece | Result |
 | --- | --- |
-| `@deepseek-ai/dsh-mcp-client` entry | REA's 139 MCP tools as `mcp__rea__open_binary`, `mcp__rea__analyze_javascript_application`, … |
+| `@deepseek-ai/dsh-mcp-client` entry | REA's 170 MCP tools as `mcp__rea__open_binary`, `mcp__rea__analyze_javascript_application`, … |
 | `@deepseek-ai/dsh-skill-filesystem` entry | the `reverse-engineer-anything` skill and the harness-side `rea-dsh` skill |
 | `lib/launcher.mjs` | finds the REA CLI, chooses a compatible Node, forwards stdio |
 
@@ -89,7 +89,7 @@ instead of `FAIL`; run it in a normal shell for the real result.
 | Symptom | Cause and fix |
 | --- | --- |
 | No `mcp__rea__*` tools | REA was not found, or the harness was not reloaded after install. Run `node lib/launcher.mjs --plan`; install `rea-agents` or set `REA_AGENTS_ENTRY`; reload. |
-| Tools exist, a provider is missing | Expected: static JavaScript/ASAR analysis needs no disassembler. Check `npx -y rea-agents@6.3.0 doctor --json`. |
+| Tools exist, a provider is missing | Expected: static JavaScript/ASAR analysis needs no disassembler. Check `npx -y rea-agents@6.4.0 doctor --json`. |
 | `resource_constraint` on a large result | Not a failure. Use `mcp__rea__inspect_analysis_view`, request a page, or export an evidence bundle instead of repeating the analysis. |
 | `npx` fallback is slow on first use | The optional dependency did not install; reinstall the plugin so `rea-agents` resolves locally. |
 | Launcher trace ends in `exit 0xFFFF0003` | REA was started on the harness Electron runtime, whose native-module ABI aborts REA's addons. Set `REA_AGENTS_NODE` to a real Node, or install Node on `PATH`; the launcher already prefers a real Node when it finds one. |

@@ -34,6 +34,15 @@ cross-references. Addresses and recovered pseudocode are analysis observations,
 not original source. Provider unavailability and unsupported metadata remain
 unknown rather than false.
 
+For a completed `analyze_function` dossier, use `inspect_analysis_view` with
+`view: {kind: "native", facet: "value_flow_operations", offset: 0, limit: 32}`
+and the exact retained Evidence ID to read selected facts without reanalysis.
+Native facets also include procedure, pseudocode, assembly, basic blocks,
+comments, callers/callees, references, unresolved calls, referenced strings and
+names, the native API record, and value-flow summaries. Pseudocode offsets and limits count UTF-16
+code units; use the returned `next_offset` for continuation. Provider limitations
+and unavailable facts remain explicit; the complete parent Evidence is retained.
+
 To see which functions or Objective-C methods a Mach-O actually calls in one
 run, use `observe_native_calls` with explicit breakpoints and a bounded
 `duration_ms`/`max_events`. It launches a new process under LLDB, so the target
@@ -143,4 +152,16 @@ context. PSP/stack/device state remains unmodeled. See [DOS guide](https://githu
 
 ### Function annotations in Ghidra
 
-Use `annotate_native_function` for one function name and/or entry comments, with at least one explicit change. Review its annotation readback and refreshed dossier inline. Changes are atomic and session-scoped; empty comments clear them, omitted fields preserve them. Later MCP calls observe edits until close. CLI `annotate-native-function` returns the updated analysis before discarding the session. Original executable bytes are unchanged; edits invalidate immutable snapshots. Windows P0 does not admit database mutations.
+Use `annotate_native_function` for one function name and/or entry comments, with at least one explicit change. Review its annotation readback and refreshed dossier inline. Changes are atomic and session-scoped; empty comments clear them, omitted fields preserve them. Later MCP calls observe edits until close. CLI `annotate-native-function` returns the updated analysis before discarding the session. Original executable bytes are unchanged; edits invalidate immutable snapshots. Windows P0 does not admit database mutations. For naming only, `set_address_name` / `set_addresses_names` also work with Ghidra: they name function entries or data addresses (primary labels) and return compact per-address success booleans instead of a dossier.
+
+## Offline PE resource inventory
+
+Use `inspect_pe_resources` with an absolute `path`, or
+`rea inspect-pe-resources ./selected.exe --json`, for portable PE32/PE32+
+resource inspection without opening a native target. Preserve returned Evidence:
+type/name/language IDs and UTF-16 names, original directory/data/payload ranges,
+code pages, payload hashes and static icon-group references. Same-language icon
+resolution is explicit; missing references and size mismatch remain visible.
+Other payloads are opaque, and this operation does not decode images or simulate
+Windows resource loading. Consult the budgets and supported tree profile in
+[offline binary diagnostics](https://github.com/morluto/rea/blob/main/docs/binary-diagnostics.md).

@@ -12,7 +12,7 @@ harness side — availability, routing, and repair.
 
 ## What the plugin installs
 
-- MCP server `rea` over stdio, exposing 139 tools as `mcp__rea__<tool>`
+- MCP server `rea` over stdio, exposing 170 tools as `mcp__rea__<tool>`
   (`mcp__rea__open_binary`, `mcp__rea__analyze_javascript_application`, …).
 - The `reverse-engineer-anything` skill, plus this one.
 - A launcher (`lib/launcher.mjs`) that locates the REA CLI and forwards stdio.
@@ -30,7 +30,7 @@ no MCP entry in a client's own configuration file.
    before repairing; never reinstall the plugin as a first move.
 3. Use the CLI when the MCP server is unavailable, when output must be written
    to a file, or when a caller-supplied process should run outside the
-   harness. `npx -y rea-agents@6.3.0 <command> --json` always works when the
+   harness. `npx -y rea-agents@6.4.0 <command> --json` always works when the
    registry is reachable.
 
 `mcp__rea__*` availability is not proof that a *provider* is installed.
@@ -44,8 +44,8 @@ that provider, not about REA.
 ```bash
 node "<plugin>/lib/launcher.mjs" --plan     # resolution plan as JSON
 node "<plugin>/lib/launcher.mjs" --version  # REA version through the launcher
-npx -y rea-agents@6.3.0 doctor --json       # readiness for the installed host
-npx -y rea-agents@6.3.0 providers --json    # provider inventory and reasons
+npx -y rea-agents@6.4.0 doctor --json       # readiness for the installed host
+npx -y rea-agents@6.4.0 providers --json    # provider inventory and reasons
 ```
 
 `--plan` reports which of the four resolution sources won (`REA_AGENTS_ENTRY`,
@@ -56,7 +56,7 @@ directory that contained this `SKILL.md` and step up two levels.
 Repairs, in order of preference:
 
 1. Reinstall the plugin so its `optionalDependencies` resolve (`rea-agents`).
-2. `npm install -g rea-agents@6.3.0`, then reload the harness.
+2. `npm install -g rea-agents@6.4.0`, then reload the harness.
 3. Set `REA_AGENTS_ENTRY` to the `rea-agents` package root or to its
    `scripts/rea.mjs`. Set `REA_AGENTS_NODE` only when the Node running REA is
    wrong. Both names survive the MCP bridge's environment scrubbing, unlike
